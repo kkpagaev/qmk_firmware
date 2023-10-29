@@ -22,8 +22,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define frame_size 512
 #define frame_duration 100
 #define frame_count 16
-#define OLED_SCREENSAVER_TIMEOUT 60000
-// #define OLED_SCREENSAVER_TIMEOUT 2000
+#define OLED_SCREENSAVER_TIMEOUT 30000
+#define ONESHOT_TAP_TOGGLE 0  /* Tapping this number of times holds the key until tapped once again. */
+#define ONESHOT_TIMEOUT 100  /* Time (in ms) before the one shot key is released */
+#define OS_ON true  /* Time (in ms) before the one shot key is released */
+#define TAPPING_TERM 200
+#define TAPPING_TERM_PER_KEY
+
+// #define OLED_SCREENSAVER_TIMEOUT 5000
+
+enum custom_keycodes {
+    FOO,
+    CTAB,
+    ALTTAB,
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_split_3x6_3(
@@ -34,46 +46,75 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,   KC_LALT,  KC_SPC,     KC_LSFT,   KC_RALT, QK_BOOT
-                                      //`--------------------------'  `--------------------------'
+                                          KC_LGUI,  MO(1),  KC_SPC,     KC_LSFT,   MO(2), MO(4)
+                                      // `--------------------------'  `--------------------------'
+                                          // KC_LGUI,   KC_LALT,  KC_SPC,     KC_LSFT,   KC_RALT, MO(4)
 
   ),
-
+    // nav
     [1] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      ALTTAB, LALT(KC_Q), FOO, ALTTAB, KC_UP, XXXXXXX,                      KC_RIGHT, LCTL(KC_U), LCTL(KC_I), LCTL(KC_O),  LALT(KC_P), LALT(KC_LEFT_BRACKET),
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LCTL, KC_LCTL, ALTTAB, CTAB, KC_TAB, XXXXXXX,                      KC_LEFT, KC_BSPC, LCTL(KC_K), KC_DOWN, LCTL(KC_SCLN),LALT(KC_QUOT),
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LSFT, LALT(KC_Z), LALT(KC_X), LALT(KC_C), LALT(KC_V), LALT(KC_B),      LALT(KC_N), KC_ENT,  LCTL(KC_COMM), XXXXXXX, XXXXXXX, XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LGUI, OSL(1),  KC_SPC,     KC_LSFT, OSL(3), KC_RALT
+
+    ),
+
+    // symb
+    [2] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                                ,-----------------------------------------------------.
+       KC_TAB, KC_TAB,   KC_2, KC_3,  KC_GRV, LSFT(KC_GRV),                                 LSFT(KC_1), LSFT(KC_RBRC), KC_4, KC_0, KC_RBRC, KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
+      KC_LCTL, KC_QUOT, KC_7, KC_LBRC, KC_5, KC_6,                                          KC_1,  KC_8, KC_9, _______, _______,  _______,
+  //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
+      KC_LSFT, LSFT(KC_EQL), KC_MINS, LSFT(KC_BACKSLASH), LSFT(KC_QUOT), LSFT(KC_LBRC),     KC_EQL, KC_BACKSLASH, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_ESC,   KC_ESC,  KC_SPC,     KC_ENT, _______, KC_RALT
+                                      //`--------------------------'  `--------------------------'
+  ),
+
+    // number
+    [3] = LAYOUT_split_3x6_3(
+       KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LCTL,  LSFT(KC_2), LSFT(KC_3),LSFT(KC_4),LSFT(KC_5), LSFT(KC_6),       LSFT(KC_MINUS),    LSFT(KC_7),    LSFT(KC_8),    LSFT(KC_9), LSFT(KC_0), XXXXXXX,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LGUI, MO(1),  KC_SPC,     KC_ENT,   MO(3), KC_RALT
+                                      //`--------------------------'  `--------------------------'
+  ),
+
+    // system
+    [4] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX, XXXXXXX,
+      KC_LCTL,    KC_7,    KC_5,    KC_3,    KC_1,    KC_9,                         KC_8,    KC_0,    KC_2,    KC_4,    KC_6, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, _______,  KC_SPC,     KC_ENT,   MO(3), KC_RALT
+                                          KC_LGUI, MO(3),  KC_SPC,     KC_ENT,   MO(3), KC_RALT
+                                      //`--------------------------'  `--------------------------'
                                       //`--------------------------'  `--------------------------'
   ),
-
-    [2] = LAYOUT_split_3x6_3(
+  [5] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_LEFT_BRACKET,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,  KC_GRV,
+      KC_LCTL,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
+      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,   MO(3),  KC_SPC,     KC_ENT, _______, KC_RALT
+                                          KC_LGUI,  MO(1),  KC_SPC,     KC_LSFT,   KC_RALT, MO(4)
                                       //`--------------------------'  `--------------------------'
+                                          // KC_LGUI,   KC_LALT,  KC_SPC,     KC_LSFT,   KC_RALT, MO(4)
+
   ),
-
-    [3] = LAYOUT_split_3x6_3(
-  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, _______,  KC_SPC,     KC_ENT, _______, KC_RALT
-                                      //`--------------------------'  `--------------------------'
-  )
 };
 
 uint32_t timer = 0;
@@ -665,21 +706,38 @@ bool afk = true;
 
 static void render_animation(void) {
     if (last_input_activity_elapsed() > OLED_SCREENSAVER_TIMEOUT) {
-        current_frame = 0;
         afk = true;
     } else {
         afk = false;
     }
-    if (afk) {
-        oled_write_raw_P(animation_imgs[0], frame_size);
+    if (afk ) {
+        if (timer_elapsed(timer) > 500) {
+            timer = timer_read();
+            current_frame = (current_frame + 1) % 2;
+
+            oled_write_raw_P(animation_imgs[current_frame], frame_size);
+        }
         return;
     }
-    if (current_frame != 15) {
-        current_frame = (current_frame + 1) % frame_count;
+
+    if (current_frame >= 14) {
+        if (timer_elapsed(timer) > 200) {
+            timer = timer_read();
+            if (current_frame == 15) {
+                current_frame = 14;
+            } else {
+                current_frame = 15;
+            }
+            oled_write_raw_P(animation_imgs[current_frame], frame_size);
+        }
+        return;
     }
 
-    oled_write_raw_P(animation_imgs[current_frame], frame_size);
-
+    if (timer_elapsed(timer) > 60) {
+        timer = timer_read();
+        current_frame = (current_frame + 1) % frame_count;
+        oled_write_raw_P(animation_imgs[current_frame], frame_size);
+    }
 }
 
 bool oled_task_user(void) {
@@ -690,3 +748,75 @@ bool oled_task_user(void) {
 }
 
 bool should_process_keypress(void) { return true; }
+
+bool is_alt_tab_active = false;
+bool is_win_tab_active = false;
+bool is_ctrl_tab_active = false;
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case ALTTAB: // ALT+TAB
+            if (record->event.pressed) {
+                if (!is_alt_tab_active) {
+                    is_alt_tab_active = true;
+                    register_code(KC_LALT);
+                }
+                register_code(KC_TAB);
+            } else {
+                unregister_code(KC_TAB);
+            }
+
+            // return false;
+            break;
+        case FOO: // WIN+TAB
+            if (record->event.pressed) {
+                if (!is_win_tab_active) {
+                    is_win_tab_active = true;
+                    register_code(KC_LGUI);
+                }
+                register_code(KC_TAB);
+            } else {
+                unregister_code(KC_TAB);
+            }
+
+            // return false;
+            break;
+        case CTAB: // CTRL+TAB
+            if (record->event.pressed) {
+                if (!is_ctrl_tab_active) {
+                    is_ctrl_tab_active = true;
+                    register_code(KC_LCTL);
+                }
+                register_code(KC_TAB);
+            } else {
+                unregister_code(KC_TAB);
+            }
+
+            // return false;
+            break;
+    }
+    return true;
+}
+
+void matrix_scan_user(void) {
+    if (is_ctrl_tab_active) {
+        if (IS_LAYER_OFF(1)){
+            unregister_code(KC_LCTL);
+            is_ctrl_tab_active = false;
+        }
+    }
+
+    if (is_win_tab_active) {
+        if (IS_LAYER_OFF(1)){
+            unregister_code(KC_LGUI);
+            is_win_tab_active = false;
+        }
+    }
+
+    if (is_alt_tab_active) {
+        if (IS_LAYER_OFF(1)){
+            unregister_code(KC_LALT);
+            is_alt_tab_active = false;
+        }
+    }
+}
