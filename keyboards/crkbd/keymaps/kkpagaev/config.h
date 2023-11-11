@@ -19,6 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
+#define MASTER_LEFT
+
+// #define MATRIX_ROWS  8
+// #define MATRIX_COLS  6
+// #define MATRIX_ROW_PINS { D4, C6, D7, E6 }
+// #define MATRIX_COL_PINS { F4, F5, F6, F7, B1, B3 }
 
 //#define USE_MATRIX_I2C
 
@@ -32,6 +38,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define TAPPING_TERM 100
 
 #ifdef RGBLIGHT_ENABLE
+    // #define RGBLED_NUM 54
+    // #define RGBLED_SPLIT { 27, 27 }
+    // #define RGBLIGHT_SPLIT
+
+    #define RGBLIGHT_EFFECT_BREATHING
+    #define RGBLIGHT_EFFECT_ALTERNATING
+    #define RGBLIGHT_EFFECT_RAINBOW_MOOD
+    #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+    #define RGBLIGHT_EFFECT_SNAKE
     #define RGBLIGHT_EFFECT_BREATHING
     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
     #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
@@ -50,3 +65,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // #define SPLIT_TRANSPORT_MIRROR
 #define SPLIT_WPM_ENABLE
+// #define DIODE_DIRECTION COL2ROW
