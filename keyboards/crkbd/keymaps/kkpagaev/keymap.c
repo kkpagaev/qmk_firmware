@@ -49,20 +49,10 @@ enum combos {
     XC_ESC,
     // KL_TAB
 };
-enum {
-  TD_PIPE_LESS = 0
-};
-
-//Tap Dance Definitions
-tap_dance_action_t tap_dance_actions[] = {
-  //Tap once for Esc, twice for Caps Lock
-  [TD_PIPE_LESS]  = ACTION_TAP_DANCE_DOUBLE(LSFT(KC_BACKSLASH), LSFT(KC_E))
-// Other declarations would go here, separated by commas, if you have them
-};
 
 const uint16_t PROGMEM ab_combo[] = {KC_S, KC_D, COMBO_END};
 const uint16_t PROGMEM hj_combo[] = {KC_H, KC_J, COMBO_END};
-const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM xc_combo[] = {LT(4, KC_X), KC_C, COMBO_END};
 const uint16_t PROGMEM uio_combo[] = {KC_U, KC_I, KC_O, COMBO_END};
 // const uint16_t PROGMEM df_combo[] = {KC_D, KC_F, COMBO_END};
 // const uint16_t PROGMEM as_combo[] = {KC_A, KC_S, COMBO_END};
@@ -110,9 +100,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
       KC_LCTL, KC_QUOT, KC_7, KC_LBRC, KC_5, KC_6,                                          KC_1,  KC_8, KC_9, _______, _______,  _______,
   //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, LSFT(KC_EQL), KC_MINS, TD(TD_PIPE_LESS), LSFT(KC_QUOT), LSFT(KC_LBRC),     KC_EQL, KC_BACKSLASH, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
+      KC_LSFT, LSFT(KC_EQL), KC_MINS, LSFT(KC_BACKSLASH), LSFT(KC_QUOT), LSFT(KC_LBRC),     KC_EQL, KC_BACKSLASH, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_ESC,   KC_ESC,  LALT(KC_SPC),     KC_ENT, _______, KC_RALT
+                                          KC_ESC,   KC_ESC,  KC_SPC,     KC_ENT, _______, KC_RALT
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -180,12 +170,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool should_process_keypress(void) { return true; }
 
+bool is_symb_layer = false;
+bool is_anything_pressed = false;
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    is_symb_layer = get_highest_layer(state) == 2;
+    is_anything_pressed = false;
+    return state;
+}
+
 bool is_alt_tab_active = false;
 bool is_win_active = false;
 bool is_ctrl_tab_active = false;
+bool is_pipe_pressed = false;
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (is_symb_layer) {
+        if (!is_anything_pressed && keycode == KC_SPC ) {
+            register_code16(RALT(KC_SPC));
+        } else {
+            if (keycode != RALT(KC_SPC)) {
+                is_anything_pressed = true;
+            }
+        }
+    }
     switch (keycode) {
+        case LSFT(KC_BACKSLASH):
+            if (record->event.pressed) {
+                is_pipe_pressed = true;
+            }
+            return true;
+            break;
+        case  LSFT(KC_QUOT):
+            if (record->event.pressed && is_pipe_pressed) {
+                SEND_STRING("E");
+                return false;
+            }
+            break;
         case ALTTAB: // ALT+TAB
             if (record->event.pressed) {
                 if (!is_alt_tab_active) {
@@ -247,6 +269,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
             break;
     }
+
+    is_pipe_pressed = false;
     return true;
 }
 
