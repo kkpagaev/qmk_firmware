@@ -183,6 +183,7 @@ bool is_alt_tab_active = false;
 bool is_win_active = false;
 bool is_ctrl_tab_active = false;
 bool is_pipe_pressed = false;
+bool is_eq_pressed = false;
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -196,6 +197,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
     }
     switch (keycode) {
+        case KC_6:
+            if (record->event.pressed) {
+                is_eq_pressed = true;
+            }
+            return true;
+            break;
+        case LSFT(KC_LBRC):
+            if (record->event.pressed && is_eq_pressed) {
+                SEND_STRING("E");
+                return false;
+            }
+
+            break;
         case LSFT(KC_BACKSLASH):
             if (record->event.pressed) {
                 is_pipe_pressed = true;
@@ -271,6 +285,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     is_pipe_pressed = false;
+    is_eq_pressed = false;
     return true;
 }
 
