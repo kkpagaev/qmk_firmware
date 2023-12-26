@@ -49,6 +49,16 @@ enum combos {
     XC_ESC,
     // KL_TAB
 };
+enum {
+  TD_PIPE_LESS = 0
+};
+
+//Tap Dance Definitions
+tap_dance_action_t tap_dance_actions[] = {
+  //Tap once for Esc, twice for Caps Lock
+  [TD_PIPE_LESS]  = ACTION_TAP_DANCE_DOUBLE(LSFT(KC_BACKSLASH), LSFT(KC_E))
+// Other declarations would go here, separated by commas, if you have them
+};
 
 const uint16_t PROGMEM ab_combo[] = {KC_S, KC_D, COMBO_END};
 const uint16_t PROGMEM hj_combo[] = {KC_H, KC_J, COMBO_END};
@@ -85,9 +95,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       ALTTAB,  LALT(KC_Q),   LALT(KC_W), LALT(KC_E), KC_UP,  LALT(KC_T),                      KC_RIGHT, LCTL(KC_U), LCTL(KC_I), LCTL(KC_O),  LALT(KC_P), LALT(KC_LEFT_BRACKET),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL, KC_LCTL, ALTTAB, CTAB, KC_TAB, XXXXXXX,                      KC_LEFT, KC_BSPC, LCTL(KC_K), KC_DOWN, LCTL(KC_SCLN),LALT(KC_QUOT),
+      KC_LCTL, KC_LCTL, LALT(KC_S), CTAB, KC_TAB, LCTL(KC_SPC),                      KC_LEFT, KC_BSPC, LCTL(KC_K), KC_DOWN, LCTL(KC_SCLN),LALT(KC_QUOT),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, MO(4), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      LALT(KC_N), KC_ENT,  LCTL(KC_COMM), XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_LSFT, TG(4), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      LALT(KC_N), KC_ENT,  LCTL(KC_COMM), XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LGUI, OSL(1),  KC_SPC,     KC_LSFT, OSL(3), KC_RALT
 
@@ -100,7 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
       KC_LCTL, KC_QUOT, KC_7, KC_LBRC, KC_5, KC_6,                                          KC_1,  KC_8, KC_9, _______, _______,  _______,
   //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, LSFT(KC_EQL), KC_MINS, LSFT(KC_BACKSLASH), LSFT(KC_QUOT), LSFT(KC_LBRC),     KC_EQL, KC_BACKSLASH, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
+      KC_LSFT, LSFT(KC_EQL), KC_MINS, TD(TD_PIPE_LESS), LSFT(KC_QUOT), LSFT(KC_LBRC),     KC_EQL, KC_BACKSLASH, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_ESC,   KC_ESC,  LALT(KC_SPC),     KC_ENT, _______, KC_RALT
                                       //`--------------------------'  `--------------------------'
@@ -123,11 +133,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_MS_UP,    KC_9,    KC_0, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_BSPC,    KC_7,    KC_5,    KC_MS_BTN2,    KC_MS_BTN1,    KC_9,            KC_MS_LEFT,    KC_MS_DOWN,    KC_MS_UP,    KC_MS_RIGHT, XXXXXXX, XXXXXXX,
+      KC_BSPC,    KC_7,    KC_MS_BTN2,    KC_MS_BTN3,    KC_MS_BTN1,    KC_9,            KC_MS_LEFT,    KC_MS_DOWN,    KC_MS_UP,    KC_MS_RIGHT, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, LCTL(KC_Z), LCTL(KC_C), LGUI(KC_V), XXXXXXX,                      XXXXXXX, KC_MS_BTN1, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
+      KC_LSFT, TG(4), LCTL(KC_Z), KC_MS_WH_DOWN, KC_MS_WH_UP, XXXXXXX,                      XXXXXXX, KC_MS_BTN1, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, MO(3),  KC_SPC,     KC_ENT,   MO(3), KC_RALT
+                                          KC_LGUI, MO(1),  KC_SPC,     KC_ENT,   MO(3), KC_RALT
                                       //`--------------------------'  `--------------------------'
                                       //`--------------------------'  `--------------------------'
 
