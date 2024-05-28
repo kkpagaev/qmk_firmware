@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#define MASTER_LEFT
+// #define MASTER_RIGHT
 
 // #define MATRIX_ROWS  8
 // #define MATRIX_COLS  6
@@ -41,21 +41,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     // #define RGBLED_SPLIT { 27, 27 }
     // #define RGBLIGHT_SPLIT
 
-    #define RGBLIGHT_EFFECT_BREATHING
-    #define RGBLIGHT_EFFECT_ALTERNATING
-    #define RGBLIGHT_EFFECT_RAINBOW_MOOD
-    #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-    #define RGBLIGHT_EFFECT_SNAKE
-    #define RGBLIGHT_EFFECT_BREATHING
-    #define RGBLIGHT_EFFECT_RAINBOW_MOOD
-    #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-    #define RGBLIGHT_EFFECT_SNAKE
-    #define RGBLIGHT_EFFECT_KNIGHT
-    #define RGBLIGHT_EFFECT_CHRISTMAS
-    #define RGBLIGHT_EFFECT_STATIC_GRADIENT
-    #define RGBLIGHT_EFFECT_RGB_TEST
-    #define RGBLIGHT_EFFECT_ALTERNATING
-    #define RGBLIGHT_EFFECT_TWINKLE
+    // #define RGBLIGHT_EFFECT_BREATHING
+    // #define RGBLIGHT_EFFECT_ALTERNATING
+    // #define RGBLIGHT_EFFECT_SNAKE
+    // #define RGBLIGHT_EFFECT_BREATHING
+    // #define RGBLIGHT_EFFECT_RAINBOW_MOOD
+    // #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+    // #define RGBLIGHT_EFFECT_SNAKE
+    // #define RGBLIGHT_EFFECT_KNIGHT
+    // #define RGBLIGHT_EFFECT_CHRISTMAS
+    // #define RGBLIGHT_EFFECT_RGB_TEST
+    // #define RGBLIGHT_EFFECT_ALTERNATING
+    #define RGB_MATRIX_SPLASH
+
+    #define RGB_MATRIX_TYPING_HEATMAP
+    // #define RGBLIGHT_EFFECT_STATIC_GRADIENT
+    // #define RGBLIGHT_EFFECT_RAINBOW_MOOD
+    // #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+    // #define RGBLIGHT_EFFECT_TWINKLE
     #define RGBLIGHT_LIMIT_VAL 120
     #define RGBLIGHT_HUE_STEP 10
     #define RGBLIGHT_SAT_STEP 17
@@ -64,4 +67,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // #define SPLIT_TRANSPORT_MIRROR
 #define SPLIT_WPM_ENABLE
+#define SPLIT_LAYER_STATE_ENABLE
 // #define DIODE_DIRECTION COL2ROW
+// #define ENABLE_RGB_MATRIX_TYPING_HEATMAP
