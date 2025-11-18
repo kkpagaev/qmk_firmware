@@ -38,26 +38,41 @@ enum custom_keycodes {
     STAB,
 };
 
-const key_override_t delete_key_override = ko_make_basic(MOD_MASK_GUI, KC_V, LCTL(KC_I));
-const key_override_t foo_key_override = ko_make_basic(MOD_MASK_GUI, KC_B, LCTL(KC_DOT));
+// const key_override_t delete_key_override = ko_make_basic(MOD_MASK_GUI, KC_V, LCTL(KC_I));
+// const key_override_t foo_key_override = ko_make_basic(MOD_MASK_GUI, KC_B, LCTL(KC_DOT));
 
-const key_override_t bar_key_override = ko_make_basic(MOD_MASK_GUI, LT(4, KC_X), LCTL(KC_SLSH));
+// const key_override_t bar_key_override = ko_make_basic(MOD_MASK_GUI, LT(4, KC_X), LCTL(KC_SLSH));
 
-const key_override_t x_key_override = ko_make_basic(MOD_MASK_GUI, KC_C, LCTL(KC_B));
+// const key_override_t x_key_override = ko_make_basic(MOD_MASK_GUI, KC_C, LCTL(KC_B));
 
-const key_override_t shift_q_override = ko_make_basic(MOD_LSFT, KC_Q, KC_1);
+// const key_override_t shift_q_override = ko_make_basic(MOD_LSFT, KC_Q, KC_1);
 // const key_override_t x_key_override = ko_make_basic(MOD_MASK_GUI, KC_C, LCTL(KC_B));
 // const key_override_t x_key_override = ko_make_basic(MOD_MASK_GUI, KC_C, LCTL(KC_B));
 // const key_override_t x_key_override = ko_make_basic(MOD_MASK_GUI, KC_C, LCTL(KC_B));
 // const key_override_t x_key_override = ko_make_basic(MOD_MASK_GUI, KC_C, LCTL(KC_B));
 
+#ifdef SWAP_HANDS_ENABLE
+__attribute__ ((weak))
+const keypos_t hand_swap_config[MATRIX_ROWS][MATRIX_COLS] = {
+	// Left
+	{{0, 4}, {1, 4}, {2, 4}, {3, 4}, {4, 4}, {5, 4}},
+	{{0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}, {5, 5}},
+	{{0, 6}, {1, 6}, {2, 6}, {3, 6}, {4, 6}, {5, 6}},
+	{{0, 7}, {1, 7}, {2, 7}, {3, 7}, {4, 7}, {5, 7}},
+	// Right
+	{{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}},
+	{{0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 1}, {5, 1}},
+	{{0, 2}, {1, 2}, {2, 2}, {3, 2}, {4, 2}, {5, 2}},
+	{{0, 3}, {1, 3}, {2, 3}, {3, 3}, {4, 3}, {5, 3}}
+};
+#endif
 
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
-	&delete_key_override,
-	&foo_key_override,
-	&bar_key_override,
-    &x_key_override,
+	// &delete_key_override,
+	// &foo_key_override,
+	// &bar_key_override,
+    // &x_key_override,
     // &ko_make_basic(MOD_LCTL, KC_Q, KC_1),
     // &ko_make_basic(MOD_LCTL, KC_W, KC_2),
     // &ko_make_basic(MOD_LCTL, KC_E, KC_3),
@@ -100,27 +115,31 @@ combo_t key_combos[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_LEFT_BRACKET,
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    MT(MOD_LCTL, KC_U),    KC_I,    KC_O,   KC_P,  KC_LEFT_BRACKET,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       MO(7),    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
       // KC_LCTL,    KC_A,    KC_S,    KC_D,    MT(MOD_LSFT, KC_F),    KC_G,                         KC_H,    MT(MOD_LSFT, KC_J),    KC_K,    KC_L, KC_SCLN, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      // KC_LSFT,    KC_Z,    LT(4, KC_X),    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
       KC_LSFT,    MT(MOD_LGUI, KC_Z),    LT(4, KC_X),    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+  //QK_SWAP_HANDS_ONE_SHOT
                                           KC_LALT,  MO(1),  KC_SPC,     OSM(MOD_RSFT),   MO(2), MO(4)
                                       // `--------------------------'  `--------------------------'
                                            // KC_LGUI,   KC_LALT,  KC_SPC,     KC_LSFT,   KC_RALT, MO(4)
   ),
+
     // nav
     [1] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      ALTTAB,  LALT(KC_Q),   LALT(KC_W), LALT(KC_E), LALT(KC_R),  LALT(KC_T),                      KC_RIGHT, LCTL(KC_U), LCTL(KC_I), LCTL(KC_O),  LALT(KC_P), LALT(KC_LEFT_BRACKET),
+      ALTTAB,  LGUI(KC_F1),   LGUI(KC_F2), LGUI(KC_F3), LGUI(KC_F4),  LGUI(KC_F5),                      KC_RIGHT, LCTL(KC_U), LCTL(KC_I), LCTL(KC_O),  LALT(KC_P), LALT(KC_LEFT_BRACKET),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      LCTL(KC_O), KC_RCTL, ALTTAB, CTAB, KC_TAB, LCTL(KC_SPC),                      KC_LEFT, KC_BSPC, LCTL(KC_K), KC_DOWN, LCTL(KC_SCLN),LALT(KC_QUOT),
+// LCTL(KC_O)
+      LCTL(KC_SLSH), KC_RCTL, ALTTAB, CTAB, KC_TAB, LCTL(KC_SPC),                      KC_LEFT, KC_BSPC, LCTL(KC_K), KC_DOWN, LCTL(KC_SCLN),LALT(KC_QUOT),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      QK_BOOT, KC_LGUI, KC_LGUI, KC_DOWN, KC_UP, LCTL(KC_D),      LALT(KC_N), KC_ENT,  LCTL(KC_COMM), LCTL(KC_DOT), XXXXXXX, QK_BOOT,
+      LCTL(KC_I), MOD_LGUI, SGRV, KC_DOWN, KC_UP, QK_SWAP_HANDS_TOGGLE,      LCTL(KC_N), KC_ENT,  LCTL(KC_COMM), LCTL(KC_DOT), LCTL(KC_SLSH), QK_BOOT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, OSL(1),  KC_SPC,     KC_LSFT, OSL(3), KC_RALT
+                                          QK_SWAP_HANDS_TOGGLE, OSL(1),  KC_SPC,     KC_LSFT, OSL(3), KC_RALT
 
     ),
 
@@ -129,9 +148,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                                ,-----------------------------------------------------.
        LSFT(KC_1), LSFT(KC_Q),   KC_2, KC_3,  KC_GRV, LSFT(KC_GRV),                                 LSFT(KC_1), LSFT(KC_RBRC), KC_4, KC_0, KC_RBRC, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
-      KC_LCTL, MT(MOD_LCTL, KC_QUOT), KC_7, KC_LBRC, KC_5, KC_6,                                          KC_1,  KC_8, KC_9, KC_RBRC, KC_RBRC,  _______,
+      KC_LCTL, KC_QUOT, KC_7, KC_LBRC, KC_5, KC_6,                                          KC_1,  KC_8, KC_9, KC_RBRC, KC_RBRC,  _______,
   //|--------+--------+--------+--------+--------+--------|                                 |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, LSFT(KC_EQL), KC_MINS, LSFT(KC_BACKSLASH), LSFT(KC_QUOT), LSFT(KC_LBRC),     KC_EQL, KC_BACKSLASH, LSFT(KC_W), KC_DOT, KC_PIPE, KC_TILD,
+      KC_LSFT, LSFT(KC_EQL), KC_MINS, LSFT(KC_BACKSLASH), LSFT(KC_QUOT), LSFT(KC_LBRC),     KC_EQL, KC_BACKSLASH, LSFT(KC_W), LSFT(KC_DOT), KC_PIPE, KC_TILD,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_ESC,   LT(3, KC_ESC),  KC_SPC,     KC_ENT, _______, KC_RALT
                                       //`--------------------------'  `--------------------------'
@@ -152,11 +171,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // system
     [4] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_1,    KC_2,    RGB_HUI,    RGB_MODE_FORWARD,    RGB_SAI,                         KC_MEDIA_STOP,    KC_MEDIA_PREV_TRACK,    KC_MEDIA_PLAY_PAUSE,  KC_MEDIA_NEXT_TRACK,    KC_0, KC_BSPC,
+       KC_TAB,    KC_1,    KC_2,    KC_MS_BTN3,    RGB_MODE_FORWARD,    RGB_SAI,                         KC_MEDIA_STOP,    KC_MEDIA_PREV_TRACK,    KC_MEDIA_PLAY_PAUSE,  KC_MEDIA_NEXT_TRACK,    KC_0, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_BSPC,    KC_7,    KC_MS_BTN2,    KC_MS_BTN3,    KC_MS_BTN1,    RGB_VAI,            KC_MS_LEFT,    KC_MS_DOWN,    KC_MS_UP,    KC_MS_RIGHT, XXXXXXX, XXXXXXX,
+      KC_BSPC,    KC_7,    KC_MS_BTN3,    KC_MS_BTN2,    KC_MS_BTN1,    RGB_VAI,            KC_MS_LEFT,    KC_MS_DOWN,    KC_MS_UP,    KC_MS_RIGHT, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, KC_LCTL, LCTL(KC_Z), KC_MS_WH_DOWN, KC_MS_WH_UP, RGB_TOG,                      KC_KB_MUTE, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, XXXXXXX, XXXXXXX, QK_BOOT,
+      QK_BOOT, KC_LCTL, LCTL(KC_Z), KC_MS_WH_DOWN, KC_MS_WH_UP, RGB_TOG,                      KC_KB_MUTE, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, XXXXXXX, XXXXXXX, QK_BOOT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LGUI, MO(1),  LGUI(KC_SPC),     LALT(KC_SPC),   MO(3), KC_RALT
                                       //`--------------------------'  `--------------------------'
@@ -201,12 +220,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_2,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,   KC_0,  KC_LEFT_BRACKET,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL,    KC_MS_LEFT,    KC_S,    KC_MS_RIGHT,    KC_MS_LEFT,    KC_MS_RIGHT,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+      KC_LCTL,    KC_6,    KC_7,    KC_8,    KC_MS_BTN1,    KC_MS_RIGHT,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
       // KC_LCTL,    KC_A,    KC_S,    KC_D,    MT(MOD_LSFT, KC_F),    KC_G,                         KC_H,    MT(MOD_LSFT, KC_J),    KC_K,    KC_L, KC_SCLN, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    MT(MOD_LGUI, KC_Z),    LT(4, KC_X),    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
+      KC_LSFT,    MT(MOD_LGUI, KC_Z),    LT(4, KC_X),    KC_MS_DOWN,    KC_MS_UP,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LALT,  MO(1),  KC_SPC,     OSM(MOD_LSFT),   MO(2), MO(4)
+                                          KC_LALT,  DF(8),  MO(8),     OSM(MOD_LSFT),   MO(2), MO(4)
+                                      // `--------------------------'  `--------------------------'
+                                           // KC_LGUI,   KC_LALT,  KC_SPC,     KC_LSFT,   KC_RALT, MO(4)
+  ),
+    // sudoku layer
+    [8] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+       KC_2,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,   KC_0,  KC_LEFT_BRACKET,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LCTL, KC_5,   KC_6,    KC_7,    KC_8,    KC_9,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+      // KC_LCTL,    KC_A,    KC_S,    KC_D,    MT(MOD_LSFT, KC_F),    KC_G,                         KC_H,    MT(MOD_LSFT, KC_J),    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LSFT,    DF(0),    DF(0),    DF(0),    DF(0),    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          KC_LALT,  DF(0),  KC_SPC,     OSM(MOD_LSFT),   MO(2), MO(4)
                                       // `--------------------------'  `--------------------------'
                                            // KC_LGUI,   KC_LALT,  KC_SPC,     KC_LSFT,   KC_RALT, MO(4)
   ),
@@ -217,11 +250,14 @@ bool should_process_keypress(void) { return true; }
 // bool is_symb_layer = false;
 // bool is_anything_pressed = false;
 
-// layer_state_t layer_state_set_user(layer_state_t state) {
-//     is_symb_layer = get_highest_layer(state) == 2;
-//     is_anything_pressed = false;
-//     return state;
-// }
+layer_state_t layer_state_set_user(layer_state_t state) {
+#ifdef SWAP_HANDS_ENABLE
+    if (is_swap_hands_on()) {
+        swap_hands_off();
+    }
+#endif
+    return state;
+}
 
 bool is_alt_tab_active = false;
 bool is_win_active = false;
@@ -229,6 +265,8 @@ bool is_ctrl_tab_active = false;
 bool is_pipe_pressed = false;
 bool is_minus_pressed = false;
 bool is_eq_pressed = false;
+bool is_slesh_pressed = false;
+bool is_star_pressed = false;
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -242,6 +280,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     //     }
     // }
     switch (keycode) {
+        // /
+        case KC_LBRC:
+            if (record->event.pressed && is_star_pressed) {
+                SEND_STRING("\bW[");
+                is_slesh_pressed = true;
+                return false;
+            }
+            if (record->event.pressed && !is_star_pressed) {
+                is_slesh_pressed = true;
+            }
+            return true;
+            break;
+
         case KC_QUOT:
             if (record->event.pressed) {
                 is_minus_pressed = true;
@@ -254,13 +305,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return true;
             break;
+        // *
+        case KC_7:
+            if (record->event.pressed) {
+                is_star_pressed = true;
+            }
+            // if (record->event.pressed && is_slesh_pressed) {
+            //     SEND_STRING("\bW/");
+            //     return false;
+            // }
+
+            return true;
+            break;
+        // (
         case KC_5:
-            if (record->event.pressed && is_minus_pressed) {
+            if (record->event.pressed && (is_star_pressed && !is_slesh_pressed)) {
+                SEND_STRING("\bWE");
+                return false;
+            }
+            if (record->event.pressed && (is_minus_pressed || is_slesh_pressed)) {
                 SEND_STRING("E");
                 return false;
             }
 
             break;
+        // ?
         case LSFT(KC_LBRC):
             if (record->event.pressed && is_eq_pressed) {
                 SEND_STRING("E");
@@ -268,6 +337,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
 
             break;
+        // |
         case LSFT(KC_BACKSLASH):
             if (record->event.pressed) {
                 is_pipe_pressed = true;
@@ -312,7 +382,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return true;
             break;
-        case STAB: // CTRL+TAB
+        case STAB: // SUPER+TAB
             if (record->event.pressed) {
                 if (!is_win_active) {
                     is_win_active = true;
@@ -350,9 +420,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
     }
 
+    is_star_pressed = false;
     is_pipe_pressed = false;
     is_eq_pressed = false;
     is_minus_pressed = false;
+    is_slesh_pressed = false;
     return true;
 }
 
